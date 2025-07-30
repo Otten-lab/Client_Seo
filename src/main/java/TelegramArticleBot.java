@@ -28,15 +28,16 @@ import java.util.*;
 
 public class TelegramArticleBot extends TelegramLongPollingBot implements WebhookBot {
     // =============== CONFIG ================
-    private static final String BOT_TOKEN = "7611891299:AAFo7yWNXV-5j6i-p5y__waD4DXc28Z86uM";
-    private static final String BOT_USERNAME = "clientseo_bot";
-    private static final String N8N_WEBHOOK_URL = "https://vaierii21061.app.n8n.cloud/webhook-test/686d4617-2b4a-43b7-964d-76c5a2c18ec3";
-    private static final String CHANNEL_ID = "@mirAl_iielvani";
+    private static final String BOT_TOKEN = System.getenv("BOT_TOKEN");
+    private static final String BOT_USERNAME = System.getenv("BOT_USERNAME");
+    private static final String N8N_WEBHOOK_URL = System.getenv("N8N_WEBHOOK_URL");
+    private static final String CHANNEL_ID = System.getenv("CHANNEL_ID");
     private static final String GOOGLE_DOCS_URL_PREFIX = "https://docs.google.com/document/d/";
-    private static final String BASEROW_API_URL = "https://api.baserow.io/api/database/rows/table/526325/?user_field_names=true";
-    private static final String BASEROW_TOKEN = "sEvOeqF7FcsAwAmwrnDUDYhDtCVnBctb";
-    private static final String IMGBB_API_KEY = "4212644746d183a386c9069d9d001cfc";
-    private static final String IMGBB_UPLOAD_URL = "https://api.imgbb.com/1/upload";
+    private static final String BASEROW_API_URL = System.getenv("BASEROW_API_URL");
+    private static final String BASEROW_TOKEN = System.getenv("BASEROW_TOKEN");
+    private static final String IMGBB_API_KEY = System.getenv("IMGBB_API_KEY");
+    private static final String IMGBB_UPLOAD_URL = System.getenv("IMGBB_UPLOAD_URL");
+
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
