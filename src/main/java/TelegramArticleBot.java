@@ -24,18 +24,12 @@ import java.util.concurrent.TimeUnit;
 
 public class TelegramArticleBot extends TelegramLongPollingBot {
 
-    // =============== НАСТРОЙКИ ================
-    private static final String BOT_TOKEN = System.getenv("BOT_TOKEN") != null ?
-            System.getenv("BOT_TOKEN") : "7611891299:AAFo7yWNXV-5j6i-p5y__waD4DXc28Z86uM";
-    private static final String BOT_USERNAME = System.getenv("BOT_USERNAME") != null ?
-            System.getenv("BOT_USERNAME") : "ClientSeo_bot";
-
-    private static final String N8N_WEBHOOK_URL = System.getenv("N8N_WEBHOOK_URL") != null ?
-            System.getenv("N8N_WEBHOOK_URL") :
-            "https://primary-production-98a7.up.railway.app/webhook/026f5739-e42e-4cbc-a052-c19ec813a9de";
-
+    // =============== НАСТРОЙКИ БЕЗ ХАРДКОДА ================
+    private static final String BOT_TOKEN = System.getenv("BOT_TOKEN");
+    private static final String BOT_USERNAME = System.getenv("BOT_USERNAME");
+    private static final String N8N_WEBHOOK_URL = System.getenv("N8N_WEBHOOK_URL");
     private static final String CHANNEL_ID = System.getenv("CHANNEL_ID");
-    private static final String GOOGLE_DOCS_URL = "https://docs.google.com/document/d/1HbO62iTUzqMrhb1Npnf8HToze7Jp7LrX_-RAS7tcD6w/edit?tab=t.0";
+    private static final String GOOGLE_DOCS_URL = System.getenv("GOOGLE_DOCS_URL");
 
     // Enums для типов
     private enum ActionType { GENERATE, REWRITE }
@@ -554,6 +548,7 @@ public class TelegramArticleBot extends TelegramLongPollingBot {
                     "📝 Или написать/вставить текст");
         }
     }
+
     /**
      * Очистка текста от лишних символов и форматирования
      */
@@ -653,7 +648,6 @@ public class TelegramArticleBot extends TelegramLongPollingBot {
         }
     }
 
-
     /**
      * Обработка результата
      */
@@ -742,7 +736,7 @@ public class TelegramArticleBot extends TelegramLongPollingBot {
             message.setChatId(CHANNEL_ID);
 
             if (text.length() > 4000) {
-                text = text.substring(0, 3900) + "...\n\n📄 Полная версия: " + GOOGLE_DOCS_URL;
+                text = text.substring(0, 3900) + "...\n\n📄 Полная версия доступна в боте";
             }
 
             message.setText(text);
@@ -966,9 +960,28 @@ public class TelegramArticleBot extends TelegramLongPollingBot {
     // === Main метод ===
     public static void main(String[] args) {
         try {
+            // ПРОВЕРКА ОБЯЗАТЕЛЬНЫХ ПЕРЕМЕННЫХ
+            if (BOT_TOKEN == null || BOT_TOKEN.isEmpty()) {
+                System.err.println("❌ ERROR: BOT_TOKEN environment variable is not set!");
+                System.err.println("Please set the BOT_TOKEN variable in Railway.");
+                System.exit(1);
+            }
+
+            if (BOT_USERNAME == null || BOT_USERNAME.isEmpty()) {
+                System.err.println("❌ ERROR: BOT_USERNAME environment variable is not set!");
+                System.err.println("Please set the BOT_USERNAME variable in Railway.");
+                System.exit(1);
+            }
+
+            if (N8N_WEBHOOK_URL == null || N8N_WEBHOOK_URL.isEmpty()) {
+                System.err.println("❌ ERROR: N8N_WEBHOOK_URL environment variable is not set!");
+                System.err.println("Please set the N8N_WEBHOOK_URL variable in Railway.");
+                System.exit(1);
+            }
+
             System.out.println("=== Starting Telegram Bot ===");
             System.out.println("Username: " + BOT_USERNAME);
-            System.out.println("N8N URL: " + N8N_WEBHOOK_URL);
+            System.out.println("N8N URL: Connected");
             System.out.println("Mode: Two-input collection");
 
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
